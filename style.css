@@ -17,6 +17,19 @@ body{
   height: 500px;
  
 }
+#timerSelect {
+  width: 19%;
+  font-size: 1rem;
+  color: skyblue;
+  border: 1px solid lightgray;
+}
+label {
+  font-size: 1.3rem;
+  color: skyblue;
+}
+input {
+  border: 1px solid lightgray;
+}
 .slide-container .slides{
   width: 100%;
   height: calc(100% - 40px);

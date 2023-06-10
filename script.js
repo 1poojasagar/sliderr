@@ -8,16 +8,23 @@ next.addEventListener('click', () => {
   prev.style.display = 'block';
 });
 next.addEventListener('click', slideNext);
+
 function slideNext() {
   slideImages[counter].style.animation = 'next1 0.5s ease-in forwards';
   counter++;
-  if (counter === numberOfImages - 1) {
-    next.style.display = 'none';
+
+  if (counter === numberOfImages) {
+    // Last slide reached, reset counter to 0
+    counter = 0;
+    slideImages[counter].style.animation = 'next2 0.5s ease-in forwards';
+  } else {
+    slideImages[counter].style.animation = 'next2 0.5s ease-in forwards';
   }
-  slideImages[counter].style.animation = 'next2 0.5s ease-in forwards';
+
   indicators();
 }
 prev.addEventListener('click', slidePrev);
+
 function slidePrev() {
   slideImages[counter].style.animation = 'prev1 0.5s ease-in forwards';
   counter--;
@@ -31,12 +38,14 @@ function slidePrev() {
   slideImages[counter].style.animation = 'prev2 0.5s ease-in forwards';
   indicators();
 }
+
 function indicators() {
   for (let i = 0; i < dots.length; i++) {
     dots[i].className = dots[i].className.replace(' active', '');
   }
   dots[counter].className += ' active';
 }
+
 function switchImage(currentImage) {
   console.log(typeof currentImage.classList);
   currentImage.classList.add('active');
@@ -67,3 +76,32 @@ function switchImage(currentImage) {
   }
   indicators();
 }
+
+
+let autoplay = false; // Flag to track autoplay state.
+let intervalId; // Variable to hold the interval ID for autoplay
+let timerDuration = 500; // Default timer duration in milliseconds
+
+const autoplayCheckbox = document.getElementById('autoplayCheckbox');
+const timerSelect = document.getElementById('timerSelect');
+
+autoplayCheckbox.addEventListener('change', () => {
+  if (autoplayCheckbox.checked) {
+    // Start autoplay
+    autoplay = true;
+    intervalId = setInterval(slideNext, timerDuration);
+  } else {
+    // Stop autoplay
+    autoplay = false;
+    clearInterval(intervalId);
+  }
+});
+
+timerSelect.addEventListener('change', () => {
+  timerDuration = parseInt(timerSelect.value);
+  // Update the interval if autoplay is active
+  if (autoplay) {
+    clearInterval(intervalId);
+    intervalId = setInterval(slideNext, timerDuration);
+  }
+});
